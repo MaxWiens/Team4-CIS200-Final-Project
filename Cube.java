@@ -24,7 +24,7 @@ public class Cube {
 	public SolveInstruction getStep(int stepIndex)
 	{
 		int index = stepIndex;
-		return SolveInstruction.get[index];
+		return Instructions.get[index];
 	}
 	
 	/** (this method determines whether there is a next step (if the cube solved) and increments the currentStep variable)
@@ -32,11 +32,8 @@ public class Cube {
 	 */ 
 	public SolveInstruction nextStep()
 	{
-		//needs to see if the cube is solved or if there is a next step;
-		//checks if there is a next step after currentStep, increments the currentStep variable
-		//then returns solveInstructions.get(currentStep)
 		currentStep++;
-		return solveInstruction.get[currentStep];
+		return Instructions.get[currentStep];
 	}
 	
 	/** (this method checks if there is a previous step before currentStep, decrements the currentStep variable)
@@ -48,7 +45,7 @@ public class Cube {
 		{
 			currentStep--;
 		}
-		return solveInstructions[currentStep];
+		return Instructions[currentStep];
 	}
 	
 	/** (this method returns the face value at a certain index)
@@ -57,7 +54,6 @@ public class Cube {
 	 */ 
 	public char[][] getFace(int index)
 	{
-		//getFace(face) - returns the face according to the arguments
-		// return 
+		return sides[index][index][index];
 	}
 }
