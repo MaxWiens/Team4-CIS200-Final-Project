@@ -8,21 +8,12 @@ public class Cube {
 	 */ 
 	public void scramble()
 	{
-		//Scrambles the cube, Could possibly randomly turn random size for a range of time
-		//rnHorizontal(int horizontalIndex, boolean isClockWise)optional 
-		//-turnVerticial(int verticialIndex) optional
-		//-turnVerticial(int verticialIndex, boolean isClockWise) optional
+		boolean clockwise = true;
 		Random ran = new Random();
-		int tv = ran.nextInt(50)+1; //finds random number for amount of turns for turning verticle
-		int th = ran.nextInt(50)+1; //finds random number for amount of turns for turning horizontal
-		for(int i = 0; i < tv; i++)
-		{
-			//call turnVertical
-		}
-		for(int i = 0; i < th; i++)
-		{
-			//call turnHorizontal
-		}
+		int tv = ran.nextInt(50)+25; //finds random number for amount of turns for turning verticle
+		int th = ran.nextInt(50)+25; //finds random number for amount of turns for turning horizontal
+		turnVerticle(tv, clockwise);
+		turnHorizontal(th, clockwise);
 
 	}
 	
@@ -32,7 +23,6 @@ public class Cube {
 	 */ 
 	public SolveInstruction getStep(int stepIndex)
 	{
-		//returns the SolveInstruction at the stepIndex
 		int index = stepIndex;
 		return SolveInstruction.get[index];
 	}
@@ -54,8 +44,10 @@ public class Cube {
 	 */ 
 	public SolveInstruction previousStep()
 	{
-		// check if there is a previous step before currentStep, decrements the currentStep variable
-		//then returns solveInstructions[currentStep]
+		if currentStep > 0
+		{
+			currentStep--;
+		}
 		return solveInstructions[currentStep];
 	}
 	
@@ -65,7 +57,6 @@ public class Cube {
 	 */ 
 	public char[][] getFace(int index)
 	{
-		char[][] faceIndex = new char [index][index];
-		returns faceIndex;
+		//Not really sure what I am supposed to do there
 	}
 }
