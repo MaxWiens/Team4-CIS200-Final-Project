@@ -10,9 +10,9 @@ public class Cube {
 	{
 		boolean clockwise = true;
 		Random ran = new Random();
-		int tv = ran.nextInt(50)+25; //finds random number for amount of turns for turning verticle
+		int tv = ran.nextInt(50)+25; //finds random number for amount of turns for turning vertical
 		int th = ran.nextInt(50)+25; //finds random number for amount of turns for turning horizontal
-		turnVerticle(tv, clockwise);
+		turnVertical(tv, clockwise);
 		turnHorizontal(th, clockwise);
 
 	}
@@ -57,6 +57,7 @@ public class Cube {
 	 */ 
 	public char[][] getFace(int index)
 	{
-		//Not really sure what I am supposed to do there
+		//getFace(face) - returns the face according to the arguments
+		// return 
 	}
 }
