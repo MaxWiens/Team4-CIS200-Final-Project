@@ -407,7 +407,7 @@ public class solvingAlgorithm {
 		
 		return atP3;
 }//end part 3
-	public char[][][] part4(char[][][] atP4){// part2, finding white corners
+	public char[][][] part4(char[][][] atP4){// part4, finding the second layer 
 		
 		
 		return atP4; 
