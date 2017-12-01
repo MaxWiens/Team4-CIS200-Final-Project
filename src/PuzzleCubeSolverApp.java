@@ -504,8 +504,8 @@ public class PuzzleCubeSolverApp extends JFrame {
 	
 	public void updateGUI(SolveInstruction solveInstruction) {
 		//updates count
-		lblTotal.setText("of "+ cube.getTotalSteps());
-		
+		lblTotal.setText("of "+ (cube.getTotalSteps()-1));
+		textField.setText(""+cube.getCurrentStepIndex());
 		//updates instructions
 		JLabel lblInstruction = (JLabel) contentPane.getComponent(2);
 		lblInstruction.setText(solveInstruction.getInstruction());
@@ -513,10 +513,10 @@ public class PuzzleCubeSolverApp extends JFrame {
 		char[][][] sides = solveInstruction.getCube();
 		for(int f=0; f<6;f++) {
 			JPanel face = (JPanel) cubeVisual.getComponent(f);
-			for(int r=0; r<sides[0].length; r++) {
-				for(int c=0; c<sides[0][r].length; c++) {
+			for(int r=0; r<sides[f].length; r++) {
+				for(int c=0; c<sides[f][r].length; c++) {
 					JPanel square  = (JPanel) face.getComponent((r*3)+c);
-					switch(sides[0][r][c]) {
+					switch(sides[f][r][c]) {
 						case 'R':
 							square.setBackground(Color.RED);
 							break;

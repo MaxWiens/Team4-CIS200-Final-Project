@@ -10,7 +10,7 @@ public class SolveInstruction {
 	
 	public SolveInstruction (char[][][] sides, String message) {
 		instruction = message;
-		this.sides = sides;
+		this.sides = sides.clone();
 	}
 	
 	public char[][][] getCube() {
