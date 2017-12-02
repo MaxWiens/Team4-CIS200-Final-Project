@@ -71,46 +71,61 @@ public class solvingWithNewTurns {
 			
 			}
 			if(atP2[1][2][2] == atP2[0][1][1] && (atP2[5][0][2] == atP2[1][1][1]) && (atP2[3][1][1] == atP2[3][2][0])) {
+				//rotate(1, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the front Side clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+				//rotate(1, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the front Side counter clockwise"));
+			}
+			if(atP2[5][0][2] == atP2[0][1][1] && (atP2[3][2][0] == atP2[1][1][1]) && (atP2[3][1][1] == atP2[1][2][2])) {
+				//rotate(3, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+				//rotate(3, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side clockwise"));
+			}
+			if(atP2[1][0][2] == atP2[0][1][1] && (atP2[1][1][1] == atP2[3][0][0]) && (atP2[0][2][2] == atP2[3][1][1])) {
+				//rotate(3, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
+				//rotate(5, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side clockwise"));
+				//rotate(3, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+				//rotate(3, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
+				//rotate(5, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side clockwise"));
+				//rotate(3, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+			}
+			if(atP2[3][0][0] == atP2[0][1][1] && (atP2[1][1][1] == atP2[0][2][2]) && (atP2[1][2][0] == atP2[3][1][1])) {
 				//rotate(3, false);
 				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
 				//rotate(5, false);
 				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
 				//rotate(3, true);
 				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side clockwise"));
+				//rotate(5, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side clockwise"));
+				//rotate(3, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
+				//rotate(5, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the bottom Side counter clockwise"));
+				//rotate(3, true);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side clockwise"));
+				//rotate(3, false);
+				//instructions.add(new SolveInstruction(copyState(sides), "Turn the right Side counter clockwise"));
 			
-				//turnFace(0, true);
-				//turnHorizontal(2, true);
-				//turnFace(0, false);
 			}
-			if(atP2[5][0][2] == atP2[0][1][1] && (atP2[3][2][0] == atP2[1][1][1]) && (atP2[3][1][1] == atP2[1][2][2])) {
-				//turnVertical(2, false);
-		 		//turnHorizontal(2, true);
-				//turnHorizontal(2, true);
-				//turnVertical(2, true);
-			}
-			if(atP2[1][0][2] == atP2[0][1][1] && (atP2[1][1][1] == atP2[3][0][0]) && (atP2[0][2][2] == atP2[3][1][1])) {
-				//turnVertical(2, false);
-				//turnHorizontal(2, false);
-				//turnVertical(2, true);
-				//turnHorizontal(2, true);
-				//turnVertical(2, false);
-				//turnHorizontal(2, false);
-				//turnVertical(2, true);
-				//turnHorizontal(2, true);
-			}
-			if(atP2[3][0][0] == atP2[0][1][1] && (atP2[1][1][1] == atP2[0][2][2]) && (atP2[1][2][0] == atP2[3][1][1])) {
-				//turnVertical(2, false);
-				//turnHorizontal(2, true);
-				//turnVertical(2, true);
-				//turnHorizontal(2, false);
-				//turnVertical(2, false);
-				//turnHorizontal(2, true);
-				//turnVertical(2, true);
-				//turnHorizontal(2, false);
-			}
-			//turnHorizontal(0, true);
-			//turnHorizontal(1, true);
-			//turnHorizontal(2, true);
+			//turnCube(false);
 			cw = false;
 		}//end for
 
@@ -119,6 +134,7 @@ public class solvingWithNewTurns {
 		
 		while(atP2[1][0][1] != atP2[1][1][1]) { //sets the front color back to red for consistency 
 			//rotate(0, true);
+			//instructions.add(new SolveInstruction(copyState(sides), "Turn the top Side clockwise"));
 		}
 		
 	return atP2;
