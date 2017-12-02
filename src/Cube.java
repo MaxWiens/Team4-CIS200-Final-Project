@@ -64,25 +64,7 @@ public class Cube {
 		currentStep = 0;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void rotate(int face, boolean isClockwise) {
 		switch(face) {
 			case 0:
@@ -138,7 +120,8 @@ public class Cube {
 		temp[5][0][2] = sides[3][0][0];
 		temp[5][0][1] = sides[3][1][0];
 		temp[5][0][0] = sides[3][2][0];
-
+		
+		sides = copyState(temp);
 		
 		//If we need to rotate counter clockwise, we can simply rotate clockwise twice more, this is done using recursion.
 		if(!clockwise)
@@ -147,7 +130,7 @@ public class Cube {
 			rotateFront(true);
 		}
 		
-		sides = copyState(temp);
+		
 	}
 	
 	private void rotateBack(boolean clockwise)
@@ -179,7 +162,8 @@ public class Cube {
 		temp[3][0][2] = sides[5][2][2];
 		temp[3][1][2] = sides[5][2][1];
 		temp[3][2][2] = sides[5][2][0];
-
+		
+		sides = copyState(temp);
 		
 		//If we need to rotate counter clockwise, we can simply rotate clockwise twice more, this is done using recursion.
 		if(!clockwise)
@@ -187,8 +171,6 @@ public class Cube {
 			rotateBack(true);
 			rotateBack(true);
 		}
-		
-		sides = copyState(temp);
 	}
 	
 	
@@ -221,15 +203,14 @@ public class Cube {
 		temp[5][1][0] = sides[1][1][0];
 		temp[5][2][0] = sides[1][2][0];
 
+		sides = copyState(temp);
 		
 		//If we need to rotate counter clockwise, we can simply rotate clockwise twice more, this is done using recursion.
 		if(!clockwise)
 		{
-			rotateFront(true);
-			rotateFront(true);
+			rotateLeft(true);
+			rotateLeft(true);
 		}
-		
-		sides = copyState(temp);
 	}
 	
 	private void rotateRight(boolean clockwise)
@@ -260,6 +241,7 @@ public class Cube {
 		temp[1][1][2] = sides[5][1][2];
 		temp[1][2][2] = sides[5][2][2];
 
+		sides = copyState(temp);
 		
 		//If we need to rotate counter clockwise, we can simply rotate clockwise twice more, this is done using recursion.
 		if(!clockwise)
@@ -268,7 +250,7 @@ public class Cube {
 			rotateRight(true);
 		}
 		
-		sides = copyState(temp);
+		
 	}
 	
 	/**
@@ -301,13 +283,15 @@ public class Cube {
 		temp[2][0][1] = sides[1][0][1];
 		temp[2][0][2] = sides[1][0][2];
 		
+		sides = copyState(temp);
+		
 		if(!clockwise)
 		{
 			rotateTop(true);
 			rotateTop(true);
 		}
 		
-		sides = copyState(temp);
+		
 	}
 	
 	/**
@@ -341,13 +325,15 @@ public class Cube {
 		temp[1][2][1] = sides[2][2][1];
 		temp[1][2][2] = sides[2][2][2];
 		
+		sides = copyState(temp);
+		
 		if(!clockwise)
 		{
 			rotateBottom(true);
 			rotateBottom(true);
 		}
 		
-		sides = copyState(temp);
+		
 	}
 	
 	
@@ -369,197 +355,111 @@ public class Cube {
 		sides = copyState(temp);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void solve() {
-		int[][] wr = searchForEdge('Y', 'W');
-		System.out.println("Y: "+wr[0][0]+" "+wr[0][1]+" "+wr[0][2]);
-		System.out.println("W: "+wr[1][0]+" "+wr[1][1]+" "+wr[1][2]);
 		
-		System.out.println("got to solve");
 		//--------------------//
 		//SOLVE RED/WHITE EDGE//
 		//--------------------//
-		int[][] rwCord = searchForEdge('R', 'W');
-		if(rwCord[0][1] !=0 && rwCord[0][2] != 1) {
-			StringBuilder instructionMessage = new StringBuilder(); 
-			instructionMessage.append("Turn the ");
-			int rotateCount = 0;
-			int rotatedFace = 1;
-			while((rwCord = searchForEdge('R', 'W'))[0][1] != 0 && rwCord[0][2] != 1) { //while the red tile is not in the top square rotate until its there
-				rotatedFace = rwCord[0][0];
-				rotate(rotatedFace,true);
-				rotateCount++;
-				//System.out.println("first while loop");
-				if(rotateCount<8) {
-					System.out.print("rw1:");
-					System.out.println("f: "+rwCord[0][0]+" row: "+rwCord[0][1]+" col: "+rwCord[0][2]);
-				}
-			}
-			instructionMessage.append(getFaceName(rotatedFace));
-			if(rotateCount >=3) {
-				instructionMessage.append("side coutner clock-wise 1 time");
-			}
-			else {
-				instructionMessage.append("side clock-wise ");
-				instructionMessage.append(rotateCount);
-				if(rotateCount > 1)
-					instructionMessage.append(" times");
-				else
-					instructionMessage.append(" time");
-			}
-			instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
-		}
+		int[][] rw = searchForEdge('R', 'W');
 		
-		rwCord = searchForEdge('R', 'W');
-		switch(rwCord[0][0]) {
-			case 0:
-				rotate(4, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the back side coutner clock-wise 1 time"));
-				rotate(3, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the right side coutner clock-wise 1 time"));
-				rotate(0, true);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the top side clock-wise 1 time"));
-				break;
-			case 1:
-				break;
-			case 5:
-				rotate(5, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side coutner clock-wise 1 time"));
-				rotate(2, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the left side coutner clock-wise 1 time"));
-				rotate(1, true);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the front side clock-wise 1 time"));
-				break;
-			default:
-				StringBuilder instructionMessage = new StringBuilder(); 
-				instructionMessage.append("Turn the ");
+		if(!(rw[0][0]==1 && rw[1][0]==0)) { //check if rw cord is already in position or gets it in position
+		
+			if(!(rw[0][1]==0 && rw[0][2]==1)) {
+				StringBuilder message = new StringBuilder();
+				message.append("Turn the ");
 				int rotateCount = 0;
-				int rotatedFace = 1;
-				do { //while the red tile is not on the red side
-					rotatedFace = getRotatableSide(rwCord[0][0], rwCord[0][1], rwCord[0][1]);
-					rotate(rotatedFace,true);
+				int rotatedFace = 0;
+				while(!(rw[0][1]==0  && rw[0][2]==1)) {//while the red tile is not in the top square rotate until its there
+					rotatedFace = rw[0][0];
+					rotate(rotatedFace, true);
 					rotateCount++;
-					//System.out.println("second while loop");
-					if(rotateCount<8) {
-						System.out.print("rw2:");
-						System.out.println("f: "+rwCord[0][0]+" row: "+rwCord[0][1]+" col: "+rwCord[0][2]);
-					}
-					rwCord = searchForEdge('R', 'W');
-				}while(rwCord[0][0] != 1); 
-				instructionMessage.append(getFaceName(rotatedFace));
+					rw = searchForEdge('R','W');
+				}
+				message.append(getFaceName(rotatedFace));
 				if(rotateCount >=3) {
-					instructionMessage.append("side coutner clock-wise 1 time");
+					message.append("side coutner clock-wise 1 time");
 				}
 				else {
-					instructionMessage.append("side clock-wise ");
-					instructionMessage.append(rotateCount);
+					message.append("side clock-wise ");
+					message.append(rotateCount);
 					if(rotateCount > 1)
-						instructionMessage.append(" times");
+						message.append(" times");
 					else
-						instructionMessage.append(" time");
+						message.append(" time");
 				}
-				instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+				instructions.add(new SolveInstruction(copyState(sides),message.toString()));
+			}
+			
+			switch(rw[0][0]) {
+				case 0:
+					rotate(4, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side coutner clock-wise 1 time"));
+					rotate(3, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side coutner clock-wise 1 time"));
+					rotate(0, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the top side clock-wise 1 time"));
+					break;
+				case 1:
+					break;
+				case 5:
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side coutner clock-wise 1 time"));
+					rotate(2, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side coutner clock-wise 1 time"));
+					rotate(1, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the front side clock-wise 1 time"));
+					break;
+				default:
+					StringBuilder instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the ");
+					int rotateCount = 0;
+					int rotatedFace = 1;
+					while(rw[0][0] != 1){ //while the red tile is not on the red side
+						rotatedFace = getRotatableSide(rw[0][0], rw[0][1], rw[0][2]);
+						rotate(rotatedFace,true);
+						rotateCount++;
+						rw = searchForEdge('R', 'W');
+					} 
+					instructionMessage.append(getFaceName(rotatedFace));
+					if(rotateCount >=3) {
+						instructionMessage.append(" side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise ");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+			}
 		}
-		
-		
-/*
+
 		//----------------------//
 		//SOLVE GREEN/WHITE EDGE//
 		//----------------------//
-		System.out.println("got to green");
-		int[][] gwCord = searchForEdge('G', 'W');
-		int rotateCount = 0;
-		if(gwCord[0][1] !=2 && gwCord[0][2] != 1) {
-			StringBuilder instructionMessage = new StringBuilder(); 
-			instructionMessage.append("Turn the ");
-			rotateCount = 0;
+		int[][] gw = searchForEdge('G', 'W');
+		if(!(gw[0][0]==2&&gw[1][0]==0)) {//checks if it is already in position
+			int rotateCount = 0;
 			int rotatedFace = 1;
-			
-			while((gwCord = searchForEdge('G', 'W'))[0][1] != 2 && gwCord[0][2] != 1) { //while the green tile is not in the bottom square rotate until its there
-				rotatedFace = gwCord[0][0];
-				rotate(rotatedFace,true);
-				rotateCount++;
-			}
-			instructionMessage.append(getFaceName(rotatedFace));
-			if(rotateCount >=3) {
-				instructionMessage.append("side coutner clock-wise 1 time");
-			}
-			else {
-				instructionMessage.append("side clock-wise ");
-				instructionMessage.append(rotateCount);
-				if(rotateCount > 1)
-					instructionMessage.append(" times");
-				else
-					instructionMessage.append(" time");
-			}
-			instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
-		}
-		
-		switch(gwCord[0][0]) {
-			case 0:
-				rotate(1, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the front side coutner clock-wise 1 time"));
-				for(int i=0;i<rotateCount;i++) {
-					rotate(0, false);
-				}
+			if(!(gw[0][1] == 2 && gw[0][2] == 1)) {
 				StringBuilder instructionMessage = new StringBuilder(); 
-				instructionMessage.append("Turn the top ");
-				if(rotateCount >=3) {
-					instructionMessage.append("side coutner clock-wise 1 time");
-				}
-				else {
-					instructionMessage.append("side clock-wise ");
-					instructionMessage.append(rotateCount);
-					if(rotateCount > 1)
-						instructionMessage.append(" times");
-					else
-						instructionMessage.append(" time");
-				}
-				instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
-				rotate(2, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the left side coutner clock-wise 1 time"));
-				break;
-			case 2:
-				rotate(2, true);
-				rotate(2, true);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the left side clock-wise 2 times"));
-				break;
-			case 5:
-				rotate(4, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the back side coutner clock-wise 1 time"));
-				rotate(2, true);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the left side clock-wise 1 time"));
-				break;
-			default:
-				instructionMessage = new StringBuilder(); 
 				instructionMessage.append("Turn the ");
-				rotateCount = 0;
-				int rotatedFace = 1;
-				while((gwCord = searchForEdge('G', 'W'))[0][0] != 2) { //while the green tile is not on the green side
-					rotatedFace = 5;
+				
+				while(!(gw[0][1] == 2 && gw[0][2] == 1)) { //while the green tile is not in the bottom square rotate until its there
+					rotatedFace = gw[0][0];
 					rotate(rotatedFace,true);
 					rotateCount++;
+					gw = searchForEdge('G', 'W');
 				}
 				instructionMessage.append(getFaceName(rotatedFace));
 				if(rotateCount >=3) {
-					instructionMessage.append("side coutner clock-wise 1 time");
+					instructionMessage.append(" side coutner clock-wise 1 time");
 				}
 				else {
-					instructionMessage.append("side clock-wise ");
+					instructionMessage.append(" side clock-wise ");
 					instructionMessage.append(rotateCount);
 					if(rotateCount > 1)
 						instructionMessage.append(" times");
@@ -567,21 +467,422 @@ public class Cube {
 						instructionMessage.append(" time");
 				}
 				instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
-				rotate(2, false);
-				rotate(2, false);
-				instructions.add(new SolveInstruction(copyState(sides),"Turn the left side counter clock-wise 2 times"));
+			}
+			
+			switch(gw[0][0]) {
+				case 0:
+					rotate(1, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the front side coutner clock-wise 1 time"));
+					for(int i=0;i<rotateCount;i++) {
+						rotate(0, false);
+					}
+					StringBuilder instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the top ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append("side clock-wise ");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					rotate(2, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side coutner clock-wise 1 time"));
+					break;
+				case 1:
+					System.out.print("s");
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side counter clock-wise 1 time"));
+	
+					for(int i=0;i<rotateCount;i++) {
+						rotate(1, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the top ");
+					if(rotateCount >=3) {
+						instructionMessage.append(" side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+
+					
+					rotate(2, true);
+					rotate(2, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side clock-wise 2 times"));
+					break;
+				case 2:
+					rotate(2, true);
+					rotate(2, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side clock-wise 2 times"));
+					break;
+				case 5:
+					rotate(4, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side coutner clock-wise 1 time"));
+					rotate(2, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side clock-wise 1 time"));
+					break;
+				default:
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the ");
+					rotateCount = 0;
+					rotatedFace = 0;
+					while(gw[0][0] != 2) { //while the green tile is not on the green side
+						rotatedFace = 5;
+						rotate(rotatedFace,true);
+						rotateCount++;
+						gw = searchForEdge('G','W');
+					}
+					instructionMessage.append(getFaceName(rotatedFace));
+					if(rotateCount >=3) {
+						instructionMessage.append(" side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+					rotate(2, false);
+					rotate(2, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the left side counter clock-wise 2 times"));
+			}
 		}
 		
 		//
 		//SOLVE ORANGE/WHITE EDGE
 		//
+		int[][] ow = searchForEdge('O', 'W');
+		if(!(ow[0][0]==4&&ow[1][0]==0)) {//checks if it is already in position
+			int rotateCount = 0;
+			int rotatedFace = 1;
+			if(!(ow[0][1] == 2 && ow[0][2] == 1)) {
+				StringBuilder instructionMessage = new StringBuilder(); 
+				instructionMessage.append("Turn the ");
+				
+				while(!(ow[0][1] == 2 && ow[0][2] == 1)) { //while the green tile is not in the bottom square rotate until its there
+					rotatedFace = ow[0][0];
+					rotate(rotatedFace,true);
+					rotateCount++;
+					ow = searchForEdge('O', 'W');
+				}
+				instructionMessage.append(getFaceName(rotatedFace));
+				if(rotateCount >=3) {
+					instructionMessage.append(" side coutner clock-wise 1 time");
+				}
+				else {
+					instructionMessage.append(" side clock-wise");
+					instructionMessage.append(rotateCount);
+					if(rotateCount > 1)
+						instructionMessage.append(" times");
+					else
+						instructionMessage.append(" time");
+				}
+				instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+			}
+			
+			switch(ow[0][0]) {
+				case 0:
+					rotate(1, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the front side clock-wise 1 time"));
+					for(int i=0;i<rotateCount;i++) {
+						rotate(0, false);
+					}
+					StringBuilder instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the top ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append("side clock-wise ");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					rotate(3, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side counter clock-wise 1 time"));
+					rotate(5, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side clock-wise 1 time"));
+					rotate(4, true);
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 2 times"));
+					break;
+				case 1:
+					rotate(5, true);
+					rotate(5, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side clock-wise 2 times"));
+	
+					for(int i=0;i<rotateCount;i++) {
+						rotate(1, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the front ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+
+					
+					rotate(4, true);
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 2 times"));
+					break;
+				case 2:
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side counter clock-wise 1 time"));
+					
+					for(int i=0;i<rotateCount;i++) {
+						rotate(2, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the left ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					
+					rotate(4, true);
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 2 times"));
+					break;
+				case 4:
+					rotate(4, true);
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 2 times"));
+					break;
+				case 5:
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side coutner clock-wise 1 time"));
+					rotate(3, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side counter clock-wise 1 time"));
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 1 time"));
+					break;
+				default:
+					System.out.println("yeeeeee");
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the ");
+					rotateCount = 0;
+					rotatedFace = 0;
+					while(ow[0][0] != 4) { //while the green tile is not on the green side
+						rotatedFace = 5;
+						rotate(rotatedFace,true);
+						rotateCount++;
+						ow = searchForEdge('O','W');
+					}
+					instructionMessage.append(getFaceName(rotatedFace));
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append("side clock-wise ");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+					rotate(4, false);
+					rotate(4, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side counter clock-wise 2 times"));
+			}
+		}
 		
 		
 		//
 		//SOLVE BLUE/WHITE EDGE
 		//
-		
-		*/
+		int[][] bw = searchForEdge('B', 'W');
+		if(!(bw[0][0]==3&&bw[1][0]==0)) {//checks if it is already in position
+			int rotateCount = 0;
+			int rotatedFace = 1;
+			if(!(bw[0][1] == 2 && bw[0][2] == 1)) {
+				StringBuilder instructionMessage = new StringBuilder(); 
+				instructionMessage.append("Turn the ");
+				
+				while(!(bw[0][1] == 2 && bw[0][2] == 1)) { //while the green tile is not in the bottom square rotate until its there
+					rotatedFace = bw[0][0];
+					rotate(rotatedFace,true);
+					rotateCount++;
+					bw = searchForEdge('B', 'W');
+				}
+				instructionMessage.append(getFaceName(rotatedFace));
+				if(rotateCount >=3) {
+					instructionMessage.append(" side coutner clock-wise 1 time");
+				}
+				else {
+					instructionMessage.append(" side clock-wise");
+					instructionMessage.append(rotateCount);
+					if(rotateCount > 1)
+						instructionMessage.append(" times");
+					else
+						instructionMessage.append(" time");
+				}
+				instructions.add(new SolveInstruction(copyState(sides),instructionMessage.toString()));
+			}
+			
+			switch(bw[0][0]) {
+				case 0:
+					rotate(1, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the top side clock-wise 1 time"));
+					for(int i=0;i<rotateCount;i++) {
+						rotate(0, false);
+					}
+					StringBuilder instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the top ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append("side clock-wise ");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 1 time"));
+					break;
+				case 1:
+					rotate(5, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side clock-wise 1 time"));
+	
+					for(int i=0;i<rotateCount;i++) {
+						rotate(1, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the front ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+
+					
+					rotate(3, true);
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 2 times"));
+					break;
+				case 2:
+					rotate(5, false);
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side clock-wise 2 times"));
+					
+					for(int i=0;i<rotateCount;i++) {
+						rotate(2, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the left ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					
+					rotate(3, true);
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 2 times"));
+					break;
+				case 3:
+					rotate(3, true);
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 2 times"));
+					break;
+				case 4:
+					rotate(5, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the bottom side counter clock-wise 1 time"));
+					
+					for(int i=0;i<rotateCount;i++) {
+						rotate(4, false);
+					}
+					
+					instructionMessage = new StringBuilder(); 
+					instructionMessage.append("Turn the back ");
+					if(rotateCount >=3) {
+						instructionMessage.append("side coutner clock-wise 1 time");
+					}
+					else {
+						instructionMessage.append(" side clock-wise");
+						instructionMessage.append(rotateCount);
+						if(rotateCount > 1)
+							instructionMessage.append(" times");
+						else
+							instructionMessage.append(" time");
+					}
+					instructions.add(new SolveInstruction(copyState(sides), instructionMessage.toString()));
+					
+					rotate(3, true);
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 2 times"));
+					break;
+				case 5:
+					rotate(4, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side clock-wise 1 time"));
+					rotate(3, true);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 1 time"));
+					rotate(4, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the back side counter clock-wise 1 time"));
+					rotate(3, false);
+					rotate(3, false);
+					instructions.add(new SolveInstruction(copyState(sides),"Turn the right side clock-wise 2 times"));
+					break;
+			}
+		}
 	}
 	
 	public String getFaceName(int f) {
@@ -608,13 +909,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 4;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 2;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 3;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 1;
 				}
 				break;
@@ -622,13 +923,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 0;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 2;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 3;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 5;
 				}
 				break;
@@ -636,13 +937,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 0;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 4;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 1;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 5;
 				}
 				break;
@@ -650,13 +951,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 0;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 1;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 4;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 5;
 				}
 				break;
@@ -664,13 +965,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 0;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 3;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 2;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 5;
 				}
 				break;
@@ -678,13 +979,13 @@ public class Cube {
 				if(row==0&&col==1) {
 					return 1;
 				}
-				else if(row==1&&col==0) {
+				if(row==1&&col==0) {
 					return 2;
 				}
-				else if(row==1&&col==2) {
+				if(row==1&&col==2) {
 					return 3;
 				}
-				else if(row==2&&col==1) {
+				if(row==2&&col==1) {
 					return 4;
 				}
 		}
@@ -698,32 +999,32 @@ public class Cube {
 				if(sides[f][0][1]==c1) {
 					int[] corCords = getCorrespondingEdge(f, 0, 1);
 					if(sides[corCords[0]][corCords[1]][corCords[2]] == c2) {
-						cords[0] = corCords;
-						cords[1][0] = f; cords[1][1] = 0; cords[1][2] = 1;
+						cords[1] = corCords;
+						cords[0][0] = f; cords[0][1] = 0; cords[0][2] = 1;
 						return cords;
 					}
 				}
 				if(sides[f][1][0]==c1) {
 					int[] corCords = getCorrespondingEdge(f, 1, 0);
 					if(sides[corCords[0]][corCords[1]][corCords[2]] == c2) {
-						cords[0] = corCords;
-						cords[1][0] = f; cords[1][1] = 1; cords[1][2] = 0;
+						cords[1] = corCords;
+						cords[0][0] = f; cords[0][1] = 1; cords[0][2] = 0;
 						return cords;
 					}
 				}
 				if(sides[f][1][2]==c1) {
 					int[] corCords = getCorrespondingEdge(f, 1, 2);
 					if(sides[corCords[0]][corCords[1]][corCords[2]] == c2) {
-						cords[0] = corCords;
-						cords[1][0] = f; cords[1][1] = 1; cords[1][2] = 2;
+						cords[1] = corCords;
+						cords[0][0] = f; cords[0][1] = 1; cords[0][2] = 2;
 						return cords;
 					}
 				}
 				if(sides[f][2][1]==c1) {
 					int[] corCords = getCorrespondingEdge(f, 2, 1);
 					if(sides[corCords[0]][corCords[1]][corCords[2]] == c2) {
-						cords[0] = corCords;
-						cords[1][0] = f; cords[1][1] = 2; cords[1][2] = 1;
+						cords[1] = corCords;
+						cords[0][0] = f; cords[0][1] = 2; cords[0][2] = 1;
 						return cords;
 					}
 				}
@@ -845,36 +1146,7 @@ public class Cube {
 		return null;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/** (this method scrambles the cube so it can be solved)
 	 */ 
 	public void scramble()
@@ -941,103 +1213,6 @@ public class Cube {
 	public int getCurrentStepIndex() {
 		return currentStep;
 	}
-	/** (this method returns the face value at a certain index)
-	* @param (passes in an index value)
-	* @return (a char[][] face index)
-	 */ 
-	public char[][] getFace(int index)
-	{
-		return sides[index];
-	}
-	
-	
-	
-	
-	
-	public String toString(){
-		String spaces = "    ";
-		StringBuilder sb = new StringBuilder();
-		sb.append(spaces);
-		sb.append(sides[0][0][0]);
-		sb.append(sides[0][0][1]);
-		sb.append(sides[0][0][2]);
-		sb.append("\n");
-		sb.append(spaces);
-		sb.append(sides[0][1][0]);
-		sb.append(sides[0][1][1]);
-		sb.append(sides[0][1][2]);
-		sb.append("\n");
-		sb.append(spaces);
-		sb.append(sides[0][2][0]);
-		sb.append(sides[0][2][1]);
-		sb.append(sides[0][2][2]);
-		sb.append("\n");
-		sb.append(sides[2][0][0]);
-		sb.append(sides[2][0][1]);
-		sb.append(sides[2][0][2]);
-		sb.append(" ");
-		sb.append(sides[1][0][0]);
-		sb.append(sides[1][0][1]);
-		sb.append(sides[1][0][2]);
-		sb.append(" ");
-		sb.append(sides[3][0][0]);
-		sb.append(sides[3][0][1]);
-		sb.append(sides[3][0][2]);
-		sb.append(" ");
-		sb.append(sides[4][0][0]);
-		sb.append(sides[4][0][1]);
-		sb.append(sides[4][0][2]);
-		sb.append("\n");
-		sb.append(sides[2][1][0]);
-		sb.append(sides[2][1][1]);
-		sb.append(sides[2][1][2]);
-		sb.append(" ");
-		sb.append(sides[1][1][0]);
-		sb.append(sides[1][1][1]);
-		sb.append(sides[1][1][2]);
-		sb.append(" ");
-		sb.append(sides[3][1][0]);
-		sb.append(sides[3][1][1]);
-		sb.append(sides[3][1][2]);
-		sb.append(" ");
-		sb.append(sides[4][1][0]);
-		sb.append(sides[4][1][1]);
-		sb.append(sides[4][1][2]);
-		sb.append("\n");
-		sb.append(sides[2][2][0]);
-		sb.append(sides[2][2][1]);
-		sb.append(sides[2][2][2]);
-		sb.append(" ");
-		sb.append(sides[1][2][0]);
-		sb.append(sides[1][2][1]);
-		sb.append(sides[1][2][2]);
-		sb.append(" ");
-		sb.append(sides[3][2][0]);
-		sb.append(sides[3][2][1]);
-		sb.append(sides[3][2][2]);
-		sb.append(" ");
-		sb.append(sides[4][2][0]);
-		sb.append(sides[4][2][1]);
-		sb.append(sides[4][2][2]);
-		sb.append("\n");
-		sb.append(spaces);
-		sb.append(sides[5][0][0]);
-		sb.append(sides[5][0][1]);
-		sb.append(sides[5][0][2]);
-		sb.append("\n");
-		sb.append(spaces);
-		sb.append(sides[5][1][0]);
-		sb.append(sides[5][1][1]);
-		sb.append(sides[5][1][2]);
-		sb.append("\n");
-		sb.append(spaces);
-		sb.append(sides[5][2][0]);
-		sb.append(sides[5][2][1]);
-		sb.append(sides[5][2][2]);
-		
-		return sb.toString();
-	}
-	
 	
 	//Returns a copy of the cube's current state
 	private char[][][] copyState(char[][][] original){
@@ -1367,162 +1542,5 @@ public class Cube {
 		sides = copyState(copy);
 	}//end turnVertical
 	
-	
-	//0=front, 1=middle, 2=back; true=clockwise, false=counterclockwise
-	//Rotates a horizontal section of the cube based on the parameters
-	public void turnFace(int faceIndex, boolean isClockWise){
-		char[][][] copy = copyState(sides);
-		//FRONT CW
-		if (faceIndex==0 && isClockWise){
-			//change front
-			copy[1][0][0] = sides[1][2][0];
-			copy[1][0][1] = sides[1][1][0];
-			copy[1][0][2] = sides[1][0][0];
-			copy[1][1][0] = sides[1][2][1];
-			copy[1][1][2] = sides[1][0][1];
-			copy[1][2][0] = sides[1][2][2];
-			copy[1][2][1] = sides[1][1][2];
-			copy[1][2][2] = sides[1][0][2];
-			//change top
-			copy[0][2][0] = sides[2][2][2];
-			copy[0][2][1] = sides[2][1][2];
-			copy[0][2][2] = sides[2][0][2];
-			//change left
-			copy[2][0][2] = sides[5][0][0];
-			copy[2][1][2] = sides[5][0][1];
-			copy[2][2][2] = sides[5][0][2];
-			//change right
-			copy[3][0][0] = sides[0][2][0];
-			copy[3][1][0] = sides[0][2][1];
-			copy[3][2][0] = sides[0][2][2];
-			//change bottom
-			copy[5][0][0] = sides[3][2][0];
-			copy[5][0][1] = sides[3][1][0];
-			copy[5][0][2] = sides[3][0][0];
-		}
-		//FRONT CCW
-		else if (faceIndex==0){
-			//change front
-			copy[1][0][0] = sides[1][0][2];
-			copy[1][0][1] = sides[1][1][2];
-			copy[1][0][2] = sides[1][2][2];
-			copy[1][1][0] = sides[1][0][1];
-			copy[1][1][2] = sides[1][2][1];
-			copy[1][2][0] = sides[1][0][0];
-			copy[1][2][1] = sides[1][1][0];
-			copy[1][2][2] = sides[1][2][0];
-			//change top
-			copy[0][2][0] = sides[3][0][0];
-			copy[0][2][1] = sides[3][1][0];
-			copy[0][2][2] = sides[3][2][0];
-			//change left
-			copy[2][0][2] = sides[0][2][2];
-			copy[2][1][2] = sides[0][2][1];
-			copy[2][2][2] = sides[0][2][0];
-			//change right
-			copy[3][0][0] = sides[5][0][2];
-			copy[3][1][0] = sides[5][0][1];
-			copy[3][2][0] = sides[5][0][0];
-			//change bottom
-			copy[5][0][0] = sides[2][0][2];
-			copy[5][0][1] = sides[2][1][2];
-			copy[5][0][2] = sides[2][2][2];
-		}
-		//MIDDLE CW
-		else if (faceIndex==1 && isClockWise){
-			//change top
-			copy[0][1][0] = sides[2][2][1];
-			copy[0][1][1] = sides[2][1][1];
-			copy[0][1][2] = sides[2][0][1];
-			//change left
-			copy[2][0][1] = sides[5][1][0];
-			copy[2][1][1] = sides[5][1][1];
-			copy[2][2][1] = sides[5][1][2];
-			//change right
-			copy[3][0][1] = sides[0][1][0];
-			copy[3][1][1] = sides[0][1][1];
-			copy[3][2][1] = sides[0][1][2];
-			//change bottom
-			copy[5][1][0] = sides[3][0][1];
-			copy[5][1][1] = sides[3][1][1];
-			copy[5][1][2] = sides[3][2][1];	
-		}
-		//MIDDLE CCW
-		else if (faceIndex==1){
-			//change top
-			copy[0][1][0] = sides[3][0][1];
-			copy[0][1][1] = sides[3][1][1];
-			copy[0][1][2] = sides[3][2][1];
-			//change left
-			copy[2][0][1] = sides[0][1][2];
-			copy[2][1][1] = sides[0][1][1];
-			copy[2][2][1] = sides[0][1][0];
-			//change right
-			copy[3][0][1] = sides[5][1][2];
-			copy[3][1][1] = sides[5][1][1];
-			copy[3][2][1] = sides[5][1][0];
-			//change bottom
-			copy[5][1][0] = sides[2][0][1];
-			copy[5][1][1] = sides[2][1][1];
-			copy[5][1][2] = sides[2][2][1];	
-		}
-		//BACK CW
-		else if (faceIndex==2 && isClockWise){
-			//change back
-			copy[4][0][0] = sides[4][2][0];
-			copy[4][0][1] = sides[4][1][0];
-			copy[4][0][2] = sides[4][0][0];
-			copy[4][1][0] = sides[4][2][1];
-			copy[4][1][2] = sides[4][0][1];
-			copy[4][2][0] = sides[4][2][2];
-			copy[4][2][1] = sides[4][1][2];
-			copy[4][2][2] = sides[4][0][2];
-			//change top
-			copy[0][0][0] = sides[3][0][2];
-			copy[0][0][1] = sides[3][1][2];
-			copy[0][0][2] = sides[3][2][2];
-			//change left
-			copy[2][0][0] = sides[0][0][2];
-			copy[2][1][0] = sides[0][0][1];
-			copy[2][2][0] = sides[0][0][0];
-			//change right
-			copy[3][0][2] = sides[5][2][2];
-			copy[3][1][2] = sides[5][2][1];
-			copy[3][2][2] = sides[5][2][0];
-			//change bottom
-			copy[5][2][0] = sides[2][0][0];
-			copy[5][2][1] = sides[2][1][0];
-			copy[5][2][2] = sides[2][2][0];	
-		}
-		//BACK CCW
-		else{
-			//change back
-			copy[4][0][0] = sides[4][0][2];
-			copy[4][0][1] = sides[4][1][2];
-			copy[4][0][2] = sides[4][2][2];
-			copy[4][1][0] = sides[4][0][1];
-			copy[4][1][2] = sides[4][2][1];
-			copy[4][2][0] = sides[4][0][0];
-			copy[4][2][1] = sides[4][1][0];
-			copy[4][2][2] = sides[4][2][0];
-			//change top
-			copy[0][0][0] = sides[2][2][0];
-			copy[0][0][1] = sides[2][1][0];
-			copy[0][0][2] = sides[2][0][0];
-			//change left
-			copy[2][0][0] = sides[5][2][0];
-			copy[2][1][0] = sides[5][2][1];
-			copy[2][2][0] = sides[5][2][2];
-			//change right
-			copy[3][0][2] = sides[0][0][0];
-			copy[3][1][2] = sides[0][0][1];
-			copy[3][2][2] = sides[0][0][2];
-			//change bottom
-			copy[5][2][0] = sides[3][2][2];
-			copy[5][2][1] = sides[3][1][2];
-			copy[5][2][2] = sides[3][0][2];
-		}
-		sides = copyState(copy);
-	}//end turnFace
 
 }//end class
